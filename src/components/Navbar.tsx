@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Phone } from 'lucide-react';
+import { AnimatePulse } from './ui/animate-pulse';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,15 +14,19 @@ const Navbar = () => {
       <div className="container-custom h-full flex items-center justify-between">
         <a href="#" className="text-primary font-bold text-xl">Kancelaria Iustum</a>
         
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-6">
+        <nav className="hidden md:flex items-center gap-6">
           <a href="#dlaczego" className="text-text hover:text-primary transition-colors">Dlaczego My</a>
           <a href="#proces" className="text-text hover:text-primary transition-colors">Jak Pomagamy</a>
           <a href="#konsultacja" className="text-text hover:text-primary transition-colors">Konsultacja</a>
           <a href="#kontakt" className="text-text hover:text-primary transition-colors">Kontakt</a>
+          <AnimatePulse>
+            <a href="tel:+48690353069" className="btn-primary flex items-center gap-2">
+              <Phone size={18} />
+              Zadzwoń teraz
+            </a>
+          </AnimatePulse>
         </nav>
         
-        {/* Mobile Menu Button */}
         <button 
           className="md:hidden text-text" 
           onClick={toggleMobileMenu}
@@ -32,7 +36,6 @@ const Navbar = () => {
         </button>
       </div>
       
-      {/* Mobile Navigation */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-16 left-0 w-full bg-white shadow-lg animate-fade-in">
           <nav className="flex flex-col py-4">

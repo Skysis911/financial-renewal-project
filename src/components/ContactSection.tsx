@@ -13,23 +13,39 @@ const ContactSection = () => {
     submitted: false
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Here you would normally send the form data to a backend
-    // For now we'll just show a success toast
-    toast({
-      title: "Formularz wysłany",
-      description: "Dziękujemy za kontakt. Odezwiemy się wkrótce.",
-    });
-    
-    setFormState({
-      name: '',
-      email: '',
-      phone: '',
-      message: '',
-      submitted: true
-    });
+    try {
+      const response = await fetch('https://formspree.io/f/kancelaria.janowski@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formState)
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Formularz wysłany",
+          description: "Dziękujemy za kontakt. Odezwiemy się wkrótce.",
+        });
+        
+        setFormState({
+          name: '',
+          email: '',
+          phone: '',
+          message: '',
+          submitted: true
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Błąd",
+        description: "Przepraszamy, wystąpił błąd. Prosimy spróbować później.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -43,12 +59,10 @@ const ContactSection = () => {
     <section id="kontakt" className="bg-gray-50">
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
           <div>
-            <h2 className="mb-6">Formularz kontaktowy</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block mb-2 font-medium">Imię i nazwisko *</label>
+            <h2 className="mb-4">Formularz kontaktowy</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input 
                   type="text"
                   id="name"
@@ -57,11 +71,8 @@ const ContactSection = () => {
                   className="input-field"
                   value={formState.name}
                   onChange={handleChange}
-                  placeholder="Twoje imię i nazwisko"
+                  placeholder="Imię i nazwisko *"
                 />
-              </div>
-              <div>
-                <label htmlFor="email" className="block mb-2 font-medium">E-mail *</label>
                 <input 
                   type="email"
                   id="email"
@@ -70,36 +81,29 @@ const ContactSection = () => {
                   className="input-field"
                   value={formState.email}
                   onChange={handleChange}
-                  placeholder="Twój adres e-mail"
+                  placeholder="E-mail *"
                 />
               </div>
-              <div>
-                <label htmlFor="phone" className="block mb-2 font-medium">Telefon</label>
-                <input 
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  className="input-field"
-                  value={formState.phone}
-                  onChange={handleChange}
-                  placeholder="Opcjonalny numer telefonu"
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block mb-2 font-medium">Krótkie opisanie sytuacji *</label>
-                <textarea 
-                  id="message"
-                  name="message"
-                  required
-                  rows={5}
-                  className="input-field resize-none"
-                  value={formState.message}
-                  onChange={handleChange}
-                  placeholder="Opisz krótko swoją sytuację"
-                ></textarea>
-              </div>
+              <input 
+                type="tel"
+                id="phone"
+                name="phone"
+                className="input-field"
+                value={formState.phone}
+                onChange={handleChange}
+                placeholder="Telefon (opcjonalnie)"
+              />
+              <textarea 
+                id="message"
+                name="message"
+                required
+                rows={3}
+                className="input-field resize-none"
+                value={formState.message}
+                onChange={handleChange}
+                placeholder="Krótki opis sytuacji *"
+              ></textarea>
               
-              {/* Hidden honeypot field for spam prevention */}
               <div className="hidden">
                 <input type="text" name="bot-field" />
               </div>

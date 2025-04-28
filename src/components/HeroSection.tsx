@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Phone } from 'lucide-react';
+import { AnimatePulse } from './ui/animate-pulse';
 
 const HeroSection = () => {
   return (
@@ -27,10 +28,12 @@ const HeroSection = () => {
             <a href="#konsultacja" className="btn-primary">
               Umów konsultację
             </a>
-            <a href="tel:+48690353069" className="btn-secondary flex items-center justify-center gap-2">
-              <Phone size={18} />
-              +48 690 353 069
-            </a>
+            <AnimatePulse>
+              <a href="tel:+48690353069" className="btn-white flex items-center justify-center gap-2">
+                <Phone size={18} />
+                +48 690 353 069
+              </a>
+            </AnimatePulse>
           </div>
           
           <div className="border-t border-white/30 pt-6 mt-4">
